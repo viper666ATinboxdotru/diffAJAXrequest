@@ -57,14 +57,14 @@ export class TaskListComponent implements OnInit {
     // );
 
 
-    //get PromiseService
-    // debugger;
-    // var myPromise = this.promiseService.getTaskList();
-    // myPromise.then(text => this.someText = text);
-
-    // alert(this.someText);
-                            
-                            
+    //get PromiseService     
+    this.promiseService.getTaskList()    
+      .then(
+        response => {
+           this.listTodoTasks = response
+        },
+        error => console.log(error)
+      );
 
   }
 
