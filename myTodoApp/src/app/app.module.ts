@@ -1,3 +1,4 @@
+import { RxjsService } from './services/rxjs.service';
 import { PromiseService } from './services/promise.service';
 import { XhrServiceService } from './services/xhr-service.service';
 import { MockTasksService } from './services/mock-tasks.service';
@@ -22,7 +23,8 @@ import { TaskListComponent } from './task-list/task-list.component';
   providers: [
     MockTasksService,
     XhrServiceService,
-    PromiseService
+    PromiseService,
+    RxjsService
   ],
   bootstrap: [AppComponent]
 })

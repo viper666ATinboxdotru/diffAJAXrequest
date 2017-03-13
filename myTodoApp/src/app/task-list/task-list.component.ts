@@ -1,9 +1,13 @@
+import { RxjsService } from './../services/rxjs.service';
 import { PromiseService } from './../services/promise.service';
 import { XhrServiceService } from './../services/xhr-service.service';
 import { MockTasksService } from './../services/mock-tasks.service';
 import { MockTodoTasks } from './../Entity/mock-todo-tasks';
 import { TodoTask } from './../Entity/todo-task';
 import { Component, OnInit } from '@angular/core';
+
+import { Observable }     from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 
 @Component({
   selector: 'app-task-list',
@@ -19,7 +23,8 @@ export class TaskListComponent implements OnInit {
 
   constructor(private mockTaskServ: MockTasksService,
               private xhrService: XhrServiceService,
-              private promiseService : PromiseService
+              private promiseService : PromiseService,
+              private rxJs: RxjsService
               ) { }
   getXHRR(xhttp: XMLHttpRequest){
     //debugger;
@@ -58,13 +63,21 @@ export class TaskListComponent implements OnInit {
 
 
     //get PromiseService     
-    this.promiseService.getTaskList()    
-      .then(
-        response => {
-           this.listTodoTasks = response
-        },
-        error => console.log(error)
-      );
+    // this.promiseService.getTaskList()    
+    //   .then(
+    //     response => {
+    //        this.listTodoTasks = response
+    //     },
+    //     error => console.log(error)
+    //   );
+
+    //get from observables
+    // this.rxJs.getTaskList().then((text) => alert(text) );
+    var prom = this.rxJs.getTaskList();
+    const source$ = Observable.fromPromise(prom);
+    source$.subscribe( res => {
+      this.listTodoTasks = res;
+    });
 
   }
 
