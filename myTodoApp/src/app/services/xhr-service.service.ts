@@ -7,7 +7,7 @@ export class XhrServiceService {
   constructor() { }
 
   getTaskList(onSuccess: Function, onError: Function): void {
-    debugger;
+    //debugger;
     var todoTaskList: TodoTask[];
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
