@@ -6,7 +6,7 @@ import { MockTodoTasks } from './../Entity/mock-todo-tasks';
 import { TodoTask } from './../Entity/todo-task';
 import { Component, OnInit } from '@angular/core';
 
-import { Observable }     from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 
 @Component({
@@ -22,22 +22,22 @@ export class TaskListComponent implements OnInit {
   someText: string;
 
   constructor(private mockTaskServ: MockTasksService,
-              private xhrService: XhrServiceService,
-              private promiseService : PromiseService,
-              private rxJs: RxjsService
-              ) { }
-  getXHRR(xhttp: XMLHttpRequest){
+    private xhrService: XhrServiceService,
+    private promiseService: PromiseService,
+    private rxJs: RxjsService
+  ) { }
+  getXHRR(xhttp: XMLHttpRequest) {
     //debugger;
     this.listTodoTasks = JSON.parse(xhttp.response);
   }
 
-  procErr(xhttp: XMLHttpRequest){
+  procErr(xhttp: XMLHttpRequest) {
     console.log(xhttp.statusText);
   }
 
-  
 
-  getTaskList(): void{
+
+  getTaskList(): void {
     //get local mock data
     //this.listTodoTasks = MockTodoTasks;
 
@@ -75,13 +75,31 @@ export class TaskListComponent implements OnInit {
     // this.rxJs.getTaskList().then((text) => alert(text) );
     var prom = this.rxJs.getTaskList();
     const source$ = Observable.fromPromise(prom);
-    source$.subscribe( res => {
+    source$.subscribe(res => {
       this.listTodoTasks = res;
     });
 
   }
 
+  //Adding new Task
+  addTask(newTask: string) {
+    this.xhrService.addNewTask(newTask, ()=>{
+      this.getTaskList();
+    });   
+  }
+
+  delTask(id: number) {    
+    this.xhrService.deleteTask(id, ()=>{
+      this.getTaskList();
+    });
+  }
+
   ngOnInit() {
+    var prom = this.rxJs.getTaskList();
+    const source$ = Observable.fromPromise(prom);
+    source$.subscribe(res => {
+      this.listTodoTasks = res;
+    });
   }
 
 }

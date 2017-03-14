@@ -4,7 +4,9 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class XhrServiceService {
 
-  constructor() { }
+  constructor() {
+
+  }
 
   getTaskList(onSuccess: Function, onError: Function): void {
     //debugger;
@@ -33,4 +35,54 @@ export class XhrServiceService {
     xhr.send(null);
   }
 
+  addNewTask(taskText: string, callback: Function) {
+
+    var xhr = new XMLHttpRequest();
+
+    // var body = "Name=" + encodeURIComponent(taskText);
+    var objToSend = { Name: taskText };
+
+    var body = JSON.stringify(objToSend);
+
+    xhr.onreadystatechange = function () {
+
+      if (xhr.readyState === 4) {
+        //good
+
+        if (xhr.status == 201) {
+          callback();
+        }
+      }
+
+    }
+
+    xhr.open("PUT", "http://adtodolistwebapi.azurewebsites.net/api/todo", true);
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(body);
+
+  }
+
+  deleteTask(taskId: number, callback: Function) {
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+      debugger;
+      if (xhr.readyState === 4) {
+        //good
+        debugger;
+        if (xhr.status == 204) {
+          callback();
+        }
+      }
+    }
+
+    xhr.open("DELETE", "http://adtodolistwebapi.azurewebsites.net/api/todo/" + taskId, true);
+    xhr.send(null)
+  }
+
 }
+
+
+
