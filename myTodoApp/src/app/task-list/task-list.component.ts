@@ -83,13 +83,42 @@ export class TaskListComponent implements OnInit {
 
   //Adding new Task
   addTask(newTask: string) {
-    this.xhrService.addNewTask(newTask, ()=>{
+    //XMLHttpRequest
+    // this.xhrService.addNewTask(newTask, ()=>{
+    //   this.getTaskList();
+    // });   
+
+    //Promise
+    // this.promiseService.addNewTask(newTask)
+    //   .then(()=>{
+    //     this.getTaskList();
+    //   });
+
+    //get from Observable
+    var prom = this.rxJs.addNewTask(newTask);
+    const source$ = Observable.fromPromise(prom);
+    source$.subscribe(()=>{
       this.getTaskList();
-    });   
+    });
   }
 
+  //deleting existing task
   delTask(id: number) {    
-    this.xhrService.deleteTask(id, ()=>{
+    //XMLHttpRequest
+    // this.xhrService.deleteTask(id, ()=>{
+    //   this.getTaskList();
+    // });
+
+    //Promise
+    // this.promiseService.deleteTask(id)
+    //   .then(()=>{
+    //     this.getTaskList();
+    //   });
+
+    //from Observable
+    var prom  = this.rxJs.deleteTask(id);
+    const source$ = Observable.fromPromise(prom);
+    source$.subscribe(() =>{
       this.getTaskList();
     });
   }
